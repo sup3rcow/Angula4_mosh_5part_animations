@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-@NgModule({ 
+@NgModule({
   declarations: [
     AppComponent,
     TodosComponent,
