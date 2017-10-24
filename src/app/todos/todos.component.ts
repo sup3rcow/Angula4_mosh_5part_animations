@@ -1,5 +1,6 @@
 import { Component  } from '@angular/core';
 import { trigger, state, transition, animate, style } from '@angular/animations';
+import { fadeReusable } from 'app/animations';
 
 @Component({
   selector: 'todos',
@@ -22,7 +23,8 @@ import { trigger, state, transition, animate, style } from '@angular/animations'
         // style({opacity: 1}), //angular sam predpostavi da je pocetno opacity 1
         animate(1000) // animate(1000, style({opacity: 0}))
       ])*/
-    ])
+    ]),
+    fadeReusable
   ]
 })
 export class TodosComponent {
