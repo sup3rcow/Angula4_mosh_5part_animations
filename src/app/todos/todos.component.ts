@@ -25,7 +25,11 @@ import { fadeReusable, slide } from 'app/animations';
       ])*/
     ]),
     fadeReusable,
-    slide
+    slide,
+    trigger('todoAnimations', [
+      transition(':enter', []),
+      transition(':leave', [])
+    ])
   ]
 })
 export class TodosComponent {
