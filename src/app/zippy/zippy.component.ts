@@ -12,16 +12,21 @@ import { fadeInAnimation, bounceOutLeftAnimation } from 'app/animations';
         height: 0,
         paddingTop: 0, // jer je u css-u(zippy-body) definiran padding
         paddingBottom: 0,
-        overflow: 'hidden'
+        opacity: 0
       })),
 
-      // ne moras pisati ovo, jer agular sam skuzi da napravi undo prvog state-a, ne moras mu posebno pisati
+      /* bolje razdvoji u multistep animation
+      // ne moras pisati ovo, jer agular sam skuzi da napravi undo prvog state-a, ne moras mu posebno pisati,
       state('rasireno', style({
         height: '*', // u ovisnosti od contenta unutar zippy-a angular odredi visinu
-        padding: '*', // vratis padding iz css-a
-        overflow: 'auto'
-      })),
-      transition('skupljeno => rasireno', useAnimation(fadeInAnimation, {params: {duration: '500ms'}})),
+        paddingTop: '*' // vratis padding iz css-a
+        paddingBottom: '*' // vratis padding iz css-a
+        opacity: 0
+      })),*/
+      transition('skupljeno => rasireno', [
+        animate('300ms ease-out', style({height: '*', paddingTop: '*', paddingBottom: '*'})), // prikazes box
+        animate('1000ms', style({opacity: 1})) // pa prikazes text
+      ]),
       transition('rasireno => skupljeno', animate('300ms ease-in'))
     ]),
   ]
