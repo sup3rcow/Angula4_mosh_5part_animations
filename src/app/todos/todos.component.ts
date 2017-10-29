@@ -1,5 +1,5 @@
 import { Component  } from '@angular/core';
-import { trigger, state, transition, animate, style, useAnimation } from '@angular/animations';
+import { trigger, state, transition, animate, style, useAnimation, query, animateChild, group } from '@angular/animations';
 import { fadeReusable, slide, bounceOutLeftAnimation, fadeInAnimation } from 'app/animations';
 
 @Component({
@@ -29,13 +29,29 @@ import { fadeReusable, slide, bounceOutLeftAnimation, fadeInAnimation } from 'ap
     trigger('todoAnimations', [
       transition(':enter', useAnimation(fadeInAnimation, {
         params: {
-          duration: '500ms'
+          duration: '1500ms'
         }
       })),
       transition(':leave', [
         style({'background-color': 'purple'}),
         animate(1000),
         useAnimation(bounceOutLeftAnimation)
+      ])
+    ]),
+    // parrent animacija ima prioritet, i child se nece izvrsiti ako se ne pozove iz parenta
+    trigger('todosAnimations', [
+      transition(':enter', [
+        // ako zelis da se parent i child animacija izvode istovremeno
+        // moras ih ubaciti u grupu
+        group([
+          query('h1', [
+          style({ transform: 'translateY(-20px)' }),
+          animate(1000)
+          ]),
+          // child mozes selektirati i preko css klase itd.. pa onda ne moras
+          // pisati @todoAnimations unutar button html-a
+          query('@todoAnimations', [animateChild()])
+        ])
       ])
     ])
   ]
@@ -54,5 +70,12 @@ export class TodosComponent {
   removeItem(item) {
     let index = this.items.indexOf(item);
     this.items.splice(index, 1);
+  }
+
+  animationStarted($event) {
+    console.log($event);
+  }
+  animationDone($event) {
+    console.log($event);
   }
 }
