@@ -1,5 +1,27 @@
-import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
+import { trigger, state, style, transition, animate, keyframes, animation, useAnimation } from '@angular/animations';
 
+// definiras reusable animaciju
+export let bounceOutLeftAnimation = animation(animate('500ms 100ms ease-out', keyframes([
+  style({offset: 0.2, opacity: 1, transform: 'translate3d(50px, 0, 0)' }), // pocetak animacije
+  style({offset: 1, opacity: 0, transform: 'translate3d(-100%, 0, 0)' })])));  // kraj animacije
+
+export let fadeInAnimation = animation([
+  style({opacity: 0}),
+  animate('{{ duration }} {{ easing }}')
+], {
+  params: {
+    duration: '2s',
+    easing: 'ease-out'
+  }
+});
+
+export let bounceInLeftAnimation = animation(animate('500ms 0ms ease-in', keyframes([
+  style({offset: 0, opacity: 0, transform: 'translate3d(-100%, 0, 0)' }), // pocetak
+  style({offset: 0.6, opacity: 1, transform: 'translate3d(25px, 0, 0)' }),
+  style({offset: 0.75, transform: 'translate3d(-10px, 0, 0)' }),
+  style({offset: 0.9, transform: 'translate3d(5px, 0, 0)' }),
+  style({offset: 1, transform: 'translate3d(0, 0, 0)' })  // kraj animacije
+])));
 
 let fadeReusable = trigger('fadeReusable', [ // proizvoljan naziv trigera
     state('void', style({opacity: 0})), // tu definiras state pa ne moras pisati u transition metodi
@@ -34,6 +56,8 @@ let slide = trigger('slide', [
 offset - pozicija od pocetka
 transform - pomicanje elementa
 */
+
+/* animacije izvuc van pa da ih moze reusati i na rugim mjestima
 let slide = trigger('slide', [
   transition(':enter', [
     animate('500ms 0ms ease-in', keyframes([
@@ -50,6 +74,14 @@ let slide = trigger('slide', [
       style({offset: 1, opacity: 0, transform: 'translate3d(-100%, 0, 0)' })  // kraj animacije
     ]))
   ])
+]);*/
+
+let slide = trigger('slide', [
+  transition(':enter', [
+    useAnimation(bounceInLeftAnimation)
+  ]),
+  transition(':leave', useAnimation(bounceOutLeftAnimation))
+
 ]);
 
 export { fadeReusable, slide };

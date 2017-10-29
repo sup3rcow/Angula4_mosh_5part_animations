@@ -1,6 +1,6 @@
 import { Component  } from '@angular/core';
-import { trigger, state, transition, animate, style } from '@angular/animations';
-import { fadeReusable, slide } from 'app/animations';
+import { trigger, state, transition, animate, style, useAnimation } from '@angular/animations';
+import { fadeReusable, slide, bounceOutLeftAnimation, fadeInAnimation } from 'app/animations';
 
 @Component({
   selector: 'todos',
@@ -27,8 +27,16 @@ import { fadeReusable, slide } from 'app/animations';
     fadeReusable,
     slide,
     trigger('todoAnimations', [
-      transition(':enter', []),
-      transition(':leave', [])
+      transition(':enter', useAnimation(fadeInAnimation, {
+        params: {
+          duration: '500ms'
+        }
+      })),
+      transition(':leave', [
+        style({'background-color': 'purple'}),
+        animate(1000),
+        useAnimation(bounceOutLeftAnimation)
+      ])
     ])
   ]
 })
