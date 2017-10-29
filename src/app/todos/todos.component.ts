@@ -1,5 +1,5 @@
 import { Component  } from '@angular/core';
-import { trigger, state, transition, animate, style, useAnimation, query, animateChild, group } from '@angular/animations';
+import { trigger, state, transition, animate, style, useAnimation, query, animateChild, group, stagger } from '@angular/animations';
 import { fadeReusable, slide, bounceOutLeftAnimation, fadeInAnimation } from 'app/animations';
 
 @Component({
@@ -50,7 +50,10 @@ import { fadeReusable, slide, bounceOutLeftAnimation, fadeInAnimation } from 'ap
           ]),
           // child mozes selektirati i preko css klase itd.. pa onda ne moras
           // pisati @todoAnimations unutar button html-a
-          query('@todoAnimations', [animateChild()])
+
+          // query('@todoAnimations', [animateChild()]) // svi childovi odjednom
+          query('@todoAnimations', stagger(200, animateChild())) // jedan iza drugog
+          // umesto animateChild(), mozes tu definirati animacije.. [style(), animate()]
         ])
       ])
     ])
